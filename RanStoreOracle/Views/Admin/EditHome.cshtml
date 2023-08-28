@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewData["Title"] = "EditHome";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Edit Home
+            <small>Preview</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Forms</a></li>
+            @*<li class="active">General Elements</li>*@
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Edit Home</h3>
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+                    <form role="form" asp-action="EditImageHome"
+                          asp-controller="Admin"
+                          enctype="multipart/form-data">
+                        <div class="box-body">
+                           
+                            <div class="form-group">
+                                <label for="exampleInputFile">Home Image</label>
+                                <input type="file" accept="image/*" name="photo" id="exampleInputFile">
+                                @*<p class="help-block">Example block-level help text here.</p>*@
+                            </div>
+
+                        </div><!-- /.box-body -->
+
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </div>
+                    </form>
+                </div><!-- /.box -->
+
+            </div><!--/.col (left) -->
+            <!-- right column -->
+
+        </div>   <!-- /.row -->
+    </section><!-- /.content -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+                <!-- general form elements -->
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Edit Home</h3>
+                    </div><!-- /.box-header -->
+                    <!-- form start -->
+                    <form role="form" asp-action="EditParagraphHome"
+                          asp-controller="Admin">
+                        <div class="box-body">
+
+                            <div class="form-group">
+                                <label for="exampleInputFile">Home Paragraph</label>
+                                <input type="text" name="paragraph" id="exampleInputFile">
+                                @*<p class="help-block">Example block-level help text here.</p>*@
+                            </div>
+
+                        </div><!-- /.box-body -->
+
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </div>
+                    </form>
+                </div><!-- /.box -->
+
+            </div><!--/.col (left) -->
+            <!-- right column -->
+
+        </div>   <!-- /.row -->
+    </section><!-- /.content -->
+</div>
+
+@*<form method="post"
+      asp-action="EditImageHome"
+      asp-controller="Admin"
+      enctype="multipart/form-data">
+    <input type="file" accept="image/*" name="photo" id="photo" />
+   
+
+    <input type="submit" value="Edit Image" class="edit" />
+</form>
+
+<form method="post"
+      asp-action="EditParagraphHome"
+      asp-controller="Admin"
+     >
+    <input type="text" name="paragraph" id="paragraph" />
+   
+    <input type="submit" value="Edit Paragraph" class="edit" />
+</form>*@

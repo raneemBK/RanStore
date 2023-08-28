@@ -1,0 +1,297 @@
+﻿@model IEnumerable<RanStoreOracle.Models.User>
+
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<html>
+    <head>
+        <style>
+        .editPhoto {
+            display: flex;
+            gap: 2.6rem;
+            position: relative;
+            margin-bottom: 4rem;
+        }
+
+        .edit {
+            position: relative;
+            bottom: -21px;
+            height: 45px;
+            align-self: center;
+            width: 134px;
+            padding: 0.8rem 1.33rem;
+            border-radius: 15px;
+            border: 1px #eee solid;
+            background-color: black;
+            cursor: pointer;
+            transition: 0.2;
+            -webkit-transition: 0.2s ease-in-out;
+            -webkit-transition: 0.2;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .editPhoto .edit {
+            position: absolute;
+            bottom: 60px;
+            left: 243px;
+        }
+
+        .fullName {
+            font-size: 2rem;
+            margin-top: 3rem;
+        }
+
+        .editPhoto img {
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -o-border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            box-shadow: 0px 13px 36px -15px #ff97ca;
+        }
+
+            .editPhoto img:hover {
+                opacity: 0.8;
+            }
+
+        #photo {
+            display: none;
+        }
+
+        label {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 1.4rem;
+        }
+
+        .input {
+            width: 40%;
+        }
+
+        .pass,
+        .email {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        </style>
+    </head>
+    <body>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Profile
+
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Profile</a></li>
+
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="box">
+                @foreach (var item in Model)
+                {
+                    <div class="box-header with-border">
+                        <section class="editPhoto">
+                            <form method="post"
+                              asp-action="EditPhoto"
+                              asp-controller="LoginAndRegister"
+                              asp-route-id="@item.Id"
+                                  enctype="multipart/form-data">
+                                <input type="file" accept="image/*" name="photo" id="photo" />
+
+                                <img src=@Url.Content("~/Images/"+item.Imagepath)
+                                 asp-append-version="true"
+                                     width="200"
+                                     height="200"
+                                     alt=""
+                                     onclick="document.getElementById('photo').click();">
+
+                                <input type="submit" value="Edit Image" class="edit" />
+                            </form>
+                            <div class="fullName">
+                                <p><span class="fname">@item.Fname</span> <span class="lname">@item.Lname</span></p>
+                            </div>
+                        </section>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <section class="editPass">
+                            <form method="post"
+                              asp-action="EditPass"
+                              asp-controller="LoginAndRegister"
+                              asp-route-id="@item.Id"
+                                  class="pass">
+                                <div class="old-pass input">
+                                    <label for="oldPass">Old Password</label>
+                                    <input type="password" name="oldPass" id="oldPass" />
+                                </div>
+                                <div class="new-pass input">
+                                    <label for="newPass">New Password</label>
+                                    <input type="password" name="newPass" id="newPass" /> <br />
+                                </div>
+
+                                <input type="submit" value="Edit Pass" class="edit" />
+                            </form>
+                        </section>
+                    </div>
+
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <section class="editEmail">
+                            <form method="post"
+                              asp-action="EditEmail"
+                              asp-controller="LoginAndRegister"
+                              asp-route-id="@item.Id"
+                                  class="email">
+                                <div class="old-email input">
+                                    <label for="oldEmail">Old Email</label>
+                                    <input type="email" name="oldEmail" id="oldEmail" />
+                                </div>
+                                <div class="new-email input">
+                                    <label for="newEmail">New Email</label>
+                                    <input type="email" name="newEmail" id="newEmail" /> <br />
+                                </div>
+
+                                <input type="submit" value="Edit Email" class="edit" />
+                            </form>
+                        </section>
+                    </div>
+
+                    <!-- /.box-footer-->
+                }
+            </div><!-- /.box -->
+
+        </section><!-- /.content -->
+    </div>
+    </body>
+</html>
+
+@*<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="~/css/style.css" />
+</head>
+<body>
+
+    <div class="container-xxl position-relative p-0">
+        <div class="container-xxl py-5 bg-primary hero-header">
+            <div class="container my-5 py-5 px-lg-5">
+                <div class="row g-5 py-5">
+                    <div class="col-12 text-center">
+                        <h1 class="text-white animated slideInDown">Profile</h1>
+                        <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                                <li class="breadcrumb-item text-white active" aria-current="page">Profile</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="margin: 5% 20%">
+        <h1>Profile</h1>
+        @foreach (var item in Model)
+        {
+            <div class="wrapper">
+                <section class="editPhoto">
+                    <form method="post"
+                      asp-action="EditPhoto"
+                      asp-controller="LoginAndRegister"
+                      asp-route-id="@item.Id"
+                          enctype="multipart/form-data">
+                        <input type="file" accept="image/*" name="photo" id="photo" />
+                       
+                        <img src=@Url.Content("~/Images/"+item.Imagepath)
+                         asp-append-version="true"
+                             width="200"
+                             height="200"
+                             alt=""
+                             onclick="document.getElementById('photo').click();">
+
+                        <input type="submit" value="Edit Image" class="edit" />
+                    </form>
+                    <div class="fullName">
+                        <p><span class="fname">@item.Fname</span> <span class="lname">@item.Lname</span></p>
+                </section>
+
+                <section class="editPass">
+                    <form method="post"
+                      asp-action="EditPass"
+                      asp-controller="LoginAndRegister"
+                      asp-route-id="@item.Id"
+                          class="pass">
+                        <div class="old-pass input">
+                            <label for="oldPass">Old Password</label>
+                            <input type="password" name="oldPass" id="oldPass" />
+                        </div>
+                        <div class="new-pass input">
+                            <label for="newPass">New Password</label>
+                            <input type="password" name="newPass" id="newPass" /> <br />
+                        </div>
+
+                        <input type="submit" value="Edit Pass" class="edit" />
+                    </form>
+                </section>
+
+                <section class="editEmail">
+                    <form method="post"
+                      asp-action="EditEmail"
+                      asp-controller="LoginAndRegister"
+                      asp-route-id="@item.Id"
+                          class="email">
+                        <div class="old-email input">
+                            <label for="oldEmail">Old Email</label>
+                            <input type="email" name="oldEmail" id="oldEmail" />
+                        </div>
+                        <div class="new-email input">
+                            <label for="newEmail">New Email</label>
+                            <input type="email" name="newEmail" id="newEmail" /> <br />
+                        </div>
+
+                        <input type="submit" value="Edit Email" class="edit" />
+                    </form>
+                </section>
+            </div>
+        }
+    </div>
+</body>
+</html>*@
+
+
+
+
+
+
+
+
+

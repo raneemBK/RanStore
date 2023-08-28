@@ -1,0 +1,96 @@
+﻿@model Tuple< IEnumerable<ModelTestimoinal>>
+
+@{
+    ViewData["Title"] = "Testimonial";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<html>
+    <head>
+        <style>
+            .test{
+            text-align: center;
+            padding-bottom: 35px;
+            color: #171a1c;
+            font-size: 1.2rem;
+            font-family: monospace;
+            font-weight: bold;
+            }
+            .text{
+            border-radius: 15px;
+            padding: 10px;
+            }
+
+        .submit {
+            color: white;
+            background-color: #171a1c;
+            font-size: 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 7px 20px;
+        }
+
+            .submit:hover {
+                background-color: white;
+                color: #171a1c;
+                border: 1px solid #171a1c;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container-xxl position-relative p-0">
+        <div class="container-xxl py-5 bg-primary hero-header">
+            <div class="container my-5 py-5 px-lg-5">
+                <div class="row g-5 py-5">
+                    <div class="col-12 text-center">
+                        <h1 class="text-white animated slideInDown">Testimonial</h1>
+                        <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                                <li class="breadcrumb-item text-white active" aria-current="page">Testimonial</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Testimonial Start -->
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container py-5 px-lg-5">
+            <p class="section-title text-secondary justify-content-center"><span></span>Testimonial<span></span></p>
+            <h1 class="text-center mb-5">What Say Our Clients!</h1>
+            <div class="test">
+                <form asp-action="AddTestimonial" asp-controller="User" method="post">
+                    <label for="test">Add Testimonial</label>
+                    <input class="text" type="text" id="test" name="test" placeholder="Message...">
+                    <input class="submit" type="submit" value="Send" />
+                </form>
+            </div>
+            <div class="owl-carousel testimonial-carousel">
+                @foreach (var item in Model.Item1)
+                {
+                    <div class="testimonial-item bg-light rounded my-4">
+                        <p class="fs-5"><i class="fa fa-quote-left fa-4x text-primary mt-n4 me-3"></i>@item.Testimoinal.Message</p>
+                        <div class="d-flex align-items-center">
+                            <img class="img-fluid flex-shrink-0 rounded-circle" src=@Url.Content("~/Images/"+item.User.Imagepath) style="width: 65px; height: 65px;">
+                            <div class="ps-4">
+                                <h5 class="mb-1">@item.User.Fname @item.User.Lname</h5>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+
+    </body>
+</html>

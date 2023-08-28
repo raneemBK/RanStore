@@ -1,0 +1,162 @@
+﻿@model Tuple<IEnumerable<GetCart>>
+
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<html>
+    <head>
+        <style>
+        .selectIpan{
+            padding: 6px;
+            color: #171a1c;
+            border-radius: 15px;
+        }
+
+        .buy{
+            padding: 25px;
+            text-align: center;
+            color: #171a1c;
+            font-size: 1.3rem;
+            font-style: oblique;
+            font-family: auto;
+        }
+        .submit{
+            color: white;
+            background-color: #171a1c;
+            font-size: 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .submit:hover {
+                background-color: white;
+                color: #171a1c;
+                border: 1px solid #171a1c;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="container-xxl position-relative p-0">
+        <div class="container-xxl py-5 bg-primary hero-header">
+            <div class="container my-5 py-5 px-lg-5">
+                <div class="row g-5 py-5">
+                    <div class="col-12 text-center">
+                        <h1 class="text-white animated slideInDown">Cart</h1>
+                        <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                                <li class="breadcrumb-item text-white active" aria-current="page">Cart</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Start -->
+    <div class="container-xxl py-5">
+        <div class="container py-5 px-lg-5">
+            <div class="wow fadeInUp" data-wow-delay="0.1s">
+                <p class="section-title text-secondary justify-content-center"><span></span>My Cart<span></span></p>
+                <h1 class="text-center mb-5">Recently Items</h1>
+            </div>
+            <div class="buy">
+                total price: @ViewData["totalPrice"]
+                <form asp-action="Buy" method="post">
+                    <input type="hidden" value="@ViewData["totalPrice"]" name="total" />
+                    <input type="hidden" value="@ViewData["quantity"]" name="quantity" />
+                    <label for="selectIpan">Select Your Visa To Buy:</label>
+                    <select name="selectIpan" class="selectIpan" id="selectIpan" asp-items="ViewBag.ipan">
+                    </select>
+                    <button class="submit" type="submit">Buy Now</button>
+                </form>
+            </div>
+            <div class="row g-4">
+                @foreach (var item in Model.Item1)
+                {
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="service-item d-flex flex-column text-center rounded">
+                            <div class="service-icon flex-shrink-0">
+                                <img class="img-fluid w-100" src=@Url.Content("~/Images/"+item.Item.Imagepath) alt="">
+                            </div>
+                            <h5 class="mb-3">@item.Item.Name</h5>
+                            <p class="m-0">@item.Item.Description</p>
+                            <p class="m-0">@item.Cart.Totalprice  JRD</p>
+                            <p class="m-0">Quantity: @item.Cart.Quantity</p>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+    </body>
+</html>
+<!-- Service End -->
+
+@*<div >
+    <a asp-action="Visa" asp-controller="User">Add Visa</a>
+    <p>
+        @ViewBag.Message
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Totalprice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Item)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Totalprice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Id)
+                    </td>
+                    
+                </tr>
+            }
+            <tr>
+               total price: @ViewData["totalPrice"]
+               <form asp-action="Buy" method="post">
+                    <input type="hidden" value="@ViewData["totalPrice"]" name="total"/>
+                    <input type="hidden" value="@ViewData["quantity"]" name="quantity"/>
+                    <label for="selectIpan">Select Your Visa To Buy:</label>
+                    <select name="selectIpan" id="selectIpan" asp-items="ViewBag.ipan">
+                        
+                    </select>
+                   <button type="submit">Buy Now</button>
+               </form>
+
+                
+            </tr>
+        </tbody>
+    </table>
+
+</div>*@

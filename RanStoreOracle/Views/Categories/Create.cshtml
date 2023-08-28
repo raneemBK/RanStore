@@ -1,0 +1,92 @@
+﻿@model RanStoreOracle.Models.Category
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+  <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>
+            Create Category
+            <small>Preview</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Forms</a></li>
+            @*<li class="active">General Elements</li>*@
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-6">
+              <!-- general form elements -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <h3 class="box-title">Create Category</h3>
+                </div><!-- /.box-header -->
+                <!-- form start -->
+                    <form role="form" asp-action="Create" enctype="multipart/form-data">
+                  <div class="box-body">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Category Name</label>
+                      <input type="text" asp-for="Name" class="form-control" id="exampleInputEmail1" placeholder="Enter name">
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="exampleInputFile">Category Image</label>
+                      <input type="file" asp-for="ImageFile" accept="image/*" id="exampleInputFile">
+                      @*<p class="help-block">Example block-level help text here.</p>*@
+                    </div>
+                   
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
+              </div><!-- /.box -->
+
+            </div><!--/.col (left) -->
+            <!-- right column -->
+          
+          </div>   <!-- /.row -->
+        </section><!-- /.content -->
+      </div>
+@*<div class="container" style="margin:5% 20%;">
+    <h1>Create</h1>
+
+    <h4>Category</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageFile" class="control-label"></label>
+                    <input asp-for="ImageFile" class="form-control" accept="image/*"/>
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    
+
+</div>*@

@@ -1,0 +1,262 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<html>
+    <head>
+        <style>
+            .report{
+                padding: 10px 18pc;
+                font-size: 1.8rem;
+            }
+
+        .selectReport {
+            padding: 6px;
+            color: #171a1c;
+            border-radius: 15px;
+        }
+
+        .submit {
+            color: white;
+            background-color: #171a1c;
+            font-size: 1.9rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 4px;
+        }
+
+            .submit:hover {
+                background-color: white;
+                color: #171a1c;
+                border: 1px solid #171a1c;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                Home
+                <small>Control panel</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+
+            </ol>
+        </section>
+        <div class="report">
+            <form asp-action="ChickReport" asp-controller="Admin" method="post">
+                <lable for="reportType">Report Type</lable>
+                <select name="reportType" id="reportType" class="selectReport">
+                    <option>Type Of Report</option>
+                    <option value="monthly">Monthly Report</option>
+                    <option value="annual">Annual Report</option>
+                    <option value="all">All Report</option>
+                </select>
+                <input type="submit" class="submit" value="Get Report" />
+            </form>
+        </div>
+        <section class="content">
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>@ViewData["NumberOfItems"]</h3>
+                            <p>Number of needed items</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div><!-- ./col -->
+              
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-yellow">
+                        <div class="inner">
+                            <h3>@ViewData["NumberOfCustomers"]</h3>
+                            <p>User Registrations</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div><!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h3>
+
+                                @foreach (var itemOffer in ViewBag.ItemOffersCount)
+                                {
+                                    <p>Item ID: @itemOffer.ItemId</p>
+                                    <p>Offers Count: @itemOffer.OffersCount</p>
+                                    <hr>
+                                }
+                                <sup style="font-size: 20px"></sup>
+                            </h3>
+                            <p> Number of needed Offers </p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div><!-- ./col -->
+
+            </div><!-- /.row -->
+
+            <div class="row">
+                <!-- Left col -->
+                <section class="col-lg-7 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="nav-tabs-custom">
+                        <!-- Tabs within a box -->
+                        <ul class="nav nav-tabs pull-right">
+                            <li class="active"><a href="#revenue-chart" data-toggle="tab">Area</a></li>
+                            <li><a href="#sales-chart" data-toggle="tab">Donut</a></li>
+                            <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
+                        </ul>
+                        <div class="tab-content no-padding">
+                            <!-- Morris chart - Sales -->
+                            <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>
+                            <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div>
+                        </div>
+                    </div><!-- /.nav-tabs-custom -->
+
+                </section><!-- /.Left col -->
+                <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                <section class="col-lg-5 connectedSortable">
+
+                    <!-- Map box -->
+                    <div class="box box-solid bg-light-blue-gradient">
+                        <div class="box-header">
+                            <!-- tools box -->
+                            <div class="pull-right box-tools">
+                                <button class="btn btn-primary btn-sm daterange pull-right" data-toggle="tooltip" title="Date range"><i class="fa fa-calendar"></i></button>
+                                <button class="btn btn-primary btn-sm pull-right" data-widget='collapse' data-toggle="tooltip" title="Collapse" style="margin-right: 5px;"><i class="fa fa-minus"></i></button>
+                            </div><!-- /. tools -->
+
+                            <i class="fa fa-map-marker"></i>
+                            <h3 class="box-title">
+                                Visitors
+                            </h3>
+                        </div>
+                        <div class="box-body">
+                            <div id="world-map" style="height: 250px; width: 100%;"></div>
+                        </div><!-- /.box-body-->
+                        <div class="box-footer no-border">
+                            <div class="row">
+                                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                    <div id="sparkline-1"></div>
+                                    <div class="knob-label">Visitors</div>
+                                </div><!-- ./col -->
+                                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                    <div id="sparkline-2"></div>
+                                    <div class="knob-label">Online</div>
+                                </div><!-- ./col -->
+                                <div class="col-xs-4 text-center">
+                                    <div id="sparkline-3"></div>
+                                    <div class="knob-label">Exists</div>
+                                </div><!-- ./col -->
+                            </div><!-- /.row -->
+                        </div>
+                    </div>
+                    <!-- /.box -->
+
+
+                </section><!-- right col -->
+            </div><!-- /.row (main row) -->
+        </section>
+        <canvas id="salesChart" width="400" height="200"></canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+    <script>
+        var salesData = @Html.Raw(Json.Serialize(ViewBag.SalesData));
+
+        // Use Chart.js to render the chart using 'salesData'
+        // Example code:
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: salesData.map(entry => entry.Month + '/' + entry.Year),
+                datasets: [{
+                    label: 'Total Sales Amount',
+                    data: salesData.map(entry => entry.TotalAmount),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                // Chart options...
+            }
+        });
+    </script>
+    </body>
+</html>
+@*<div class="container" style="margin:5% 20%;">
+    <form asp-action="ChickReport" asp-controller="Admin" method="post">
+        <lable for="reportType">Report Type</lable>
+        <select name="reportType" id="reportType">
+            <option>Type Of Report</option>
+            <option value="monthly">Monthly Report</option>
+            <option value="annual">Annual Report</option>
+            <option value="all">All Report</option>
+        </select>
+        <input type="submit" value="Get Report"/>
+    </form>
+    <div class="row">
+        <div class="col-md-6 mb-4 stretch-card transparent">
+            <div class="card card-tale">
+                <div class="card-body">
+                    <p class="mb-4">Number of Users Registered</p>
+                    <p class="fs-30 mb-2">@ViewData["NumberOfCustomers"]</p>
+                    <p>10.00% (30 days)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4 stretch-card transparent">
+            <div class="card card-tale">
+                <div class="card-body">
+                    <p class="mb-4">
+                        Number of needed items
+                    </p>
+                    <p class="fs-30 mb-2">@ViewData["NumberOfItems"]</p>
+                    <p>10.00% (30 days)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4 stretch-card transparent">
+            <div class="card card-tale">
+                <div class="card-body">
+                    <p class="mb-4">
+                        Number of needed items
+                    </p>
+                        @foreach (var item in ViewBag.NumberOfOffer)
+                        {
+                        <p class="fs-30 mb-2">     
+
+                                    @item
+                                
+                        </p>
+                        }
+                    <p>10.00% (30 days)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+

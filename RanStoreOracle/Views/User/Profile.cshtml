@@ -1,0 +1,120 @@
+﻿@model IEnumerable<RanStoreOracle.Models.User>
+
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="~/css/style.css" />
+    <style>
+        .visa{
+            margin: 10px 15pc;
+            font-size: 1.2rem;
+            border: 1px solid;
+            padding: 20px;
+            border-radius: 25px;
+            color: white;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-xxl position-relative p-0">
+        <div class="container-xxl py-5 bg-primary hero-header">
+            <div class="container my-5 py-5 px-lg-5">
+                <div class="row g-5 py-5">
+                    <div class="col-12 text-center">
+                        <h1 class="text-white animated slideInDown">Profile</h1>
+                        <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                                <li class="breadcrumb-item text-white active" aria-current="page">Profile</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="margin: 5% 20%">
+        <h1>Profile</h1>
+        @foreach (var item in Model)
+        {
+            <div class="wrapper">
+                <section class="editPhoto">
+                    <form method="post"
+                      asp-action="EditPhoto"
+                      asp-controller="LoginAndRegister"
+                      asp-route-id="@item.Id"
+                          enctype="multipart/form-data">
+                        <input type="file" accept="image/*" name="photo" id="photo" />
+                        @*<img src="raneem.jpg"
+                             width="200"
+                             height="200"
+                             alt=""
+                             onclick="document.getElementById('photo').click();" />*@
+                        <img src=@Url.Content("~/Images/"+item.Imagepath)
+                         asp-append-version="true"
+                             width="200"
+                             height="200"
+                             alt=""
+                             onclick="document.getElementById('photo').click();">
+
+                        <input type="submit" value="Edit Image" class="edit" />
+                    </form>
+                    <div class="fullName">
+                        <p><span class="fname">@item.Fname</span> <span class="lname">@item.Lname</span></p>
+                </section>
+
+                <section class="editPass">
+                    <form method="post"
+                      asp-action="EditPass"
+                      asp-controller="LoginAndRegister"
+                      asp-route-id="@item.Id"
+                          class="pass">
+                        <div class="old-pass input">
+                            <label for="oldPass">Old Password</label>
+                            <input type="password" name="oldPass" id="oldPass" />
+                        </div>
+                        <div class="new-pass input">
+                            <label for="newPass">New Password</label>
+                            <input type="password" name="newPass" id="newPass" /> <br />
+                        </div>
+
+                        <input type="submit" value="Edit Pass" class="edit" />
+                    </form>
+                </section>
+
+                <section class="editEmail">
+                    <form method="post"
+                      asp-action="EditEmail"
+                      asp-controller="LoginAndRegister"
+                      asp-route-id="@item.Id"
+                          class="email">
+                        <div class="old-email input">
+                            <label for="oldEmail">Old Email</label>
+                            <input type="email" name="oldEmail" id="oldEmail" />
+                        </div>
+                        <div class="new-email input">
+                            <label for="newEmail">New Email</label>
+                            <input type="email" name="newEmail" id="newEmail" /> <br />
+                        </div>
+
+                        <input type="submit" value="Edit Email" class="edit" />
+                    </form>
+                </section>
+            </div>
+        }
+        <a asp-action="Visa" asp-controller="User" class="visa"> Add Visa </a>
+    </div>
+</body>
+</html>

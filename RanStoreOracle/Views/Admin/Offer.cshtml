@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "Offer";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container" style="margin:5% 20%;">
+    <form method="post" asp-action="Offer" asp-controller="Admin">
+        <select name="Status" id="Status">
+            <option>Select Status</option>
+            <option value="Accept">Accept</option>
+        </select>
+        <input type="submit" value="Save" />
+    </form>
+</div>
+

@@ -1,0 +1,59 @@
+﻿@model Login
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<!-- Created By CodingNepal -->
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Login Form Design | CodeLab</title>
+    <link rel="stylesheet" href="~/LoginAndRegisterAssets/style.css">
+</head>
+<body>
+    <div class="container-xxl position-relative p-0">
+        <div class="container-xxl py-5 bg-primary hero-header w-100">
+            <div class="container my-5 py-5 px-lg-5">
+                <div class="row g-5 py-5">
+                    <div class="col-12 text-center">
+                        <h1 class="text-white animated slideInDown">Login now</h1>
+                        <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                                <li class="breadcrumb-item text-white active" aria-current="page">Login</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="wrapper">
+        <div class="title">
+            Login Form
+        </div>
+        <form method="post" asp-action="Login" asp-controller="LoginAndRegister">
+            <div class="field">
+                <input type="text" asp-for="Username" required>
+                <label asp-for="Username">Email Address</label>
+            </div>
+            <div class="field">
+                <input type="password" asp-for="Password" required>
+                <label asp-for="Password">Password</label>
+            </div>
+            <div class="field">
+                <input type="submit" value="Login">
+            </div>
+            <div class="signup-link">
+                Not a member? <a asp-action="Register" asp-controller="LoginAndRegister">Signup now</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

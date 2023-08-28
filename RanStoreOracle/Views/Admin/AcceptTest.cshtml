@@ -1,0 +1,149 @@
+﻿@model IEnumerable<RanStoreOracle.Models.Testimonial>
+
+@{
+    ViewData["Title"] = "AcceptTest";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Simple Table
+            <small>Accept Offers</small>
+        </h1>
+        @*<ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tables</a></li>
+        <li class="active">Simple</li>
+        </ol>*@
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Accept Offers</h3>
+                        <div class="box-tools">
+                            <div class="input-group">
+                                <input type="text" name="table_search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search" />
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Message
+                                    </th>
+                                   
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        User ID
+                                    </th>
+
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Message)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Status)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserId)
+                                        </td>
+                                       
+
+                                        <td>
+                                            <div class="box-body">
+                                                <form role="form" method="post" asp-action="Testmonial" asp-controller="Admin" asp-route-id="@item.Id">
+                                                    <div class="form-group">
+                                                        <select class="form-control" name="Status" id="Status">
+                                                            <option>Select Status</option>
+                                                            <option value="Accept">Accept</option>
+                                                        </select>
+                                                        
+
+                                                    </div>
+                                                    <div>
+                                                        <input type="submit" value="Save" />
+                                                    </div>
+
+
+
+                                                </form>
+                                            </div><!-- /.box-body -->
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div>
+        </div>
+    </section><!-- /.content -->
+</div>
+
+
+@*<h1>AcceptTest</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+                    <form method="post" asp-action="Testmonial" asp-controller="Admin" asp-route-id="@item.Id">
+                        <select name="Status" id="Status">
+                            <option>Select Status</option>
+                            <option value="Accept">Accept</option>
+                        </select>
+                        <input type="submit" value="Save" />
+                    </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>*@

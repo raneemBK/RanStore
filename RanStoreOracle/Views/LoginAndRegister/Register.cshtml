@@ -1,0 +1,73 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title> Responsive Registration Form | CodingLab </title>
+    <link rel="stylesheet" href="~/LoginAndRegisterAssets/styleRegister.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <div class="title">Registration</div>
+        <div class="content">
+            <form method="post" asp-action="Register" asp-controller="LoginAndRegister" enctype="multipart/form-data">
+                <div class="user-details">
+                    <div class="input-box">
+                        <span class="details">First Name</span>
+                        <input type="text" asp-for="Fname" placeholder="Enter your first name" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Last Name</span>
+                        <input type="text" asp-for="Lname" placeholder="Enter your last name" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Username</span>
+                        <input type="email" name="userName" id="userName" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="input-box">
+                        <span class="details">Password</span>
+                        <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="input-box">
+                        <span class="details">Image</span>
+                        <input type="file" asp-for="ImageFile" accept="image/*" required>
+                    </div>
+                    
+                </div>
+                <div class="gender-details">
+                    <label>Enter Gender</label>
+                    <select asp-for="Gender"> 
+                        <option>Gender</option>
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                    </select>
+                </div>
+                <div class="gender-details">
+                    <label>Enter type of user</label>
+                    <select name="type" id="type">
+                        <option>Type of user</option>
+                        <option value="customer">Customer</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="button">
+                    <input type="submit" value="Register">
+                </div>
+                <div class="signup-link">
+                    Have an account? <a asp-action="Login" asp-controller="LoginAndRegister">Login now</a>
+                   <br /><br /> <a asp-action="Index" asp-controller="Home">Back Home!</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
