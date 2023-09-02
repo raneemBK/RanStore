@@ -55,21 +55,21 @@
                     <div class="feature-item bg-light rounded text-center p-4">
                         <i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i>
                         <h5 class="mb-3">Digital Marketing</h5>
-                        <p class="m-0">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</p>
+                        <p class="m-0">Announcing the need for a specific item to receive offers.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="feature-item bg-light rounded text-center p-4">
                         <i class="fa fa-3x fa-search text-primary mb-4"></i>
-                        <h5 class="mb-3">SEO & Backlinks</h5>
-                        <p class="m-0">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</p>
+                        <h5 class="mb-3">Filter Offers</h5>
+                        <p class="m-0">Best website to buy an items.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="feature-item bg-light rounded text-center p-4">
                         <i class="fa fa-3x fa-laptop-code text-primary mb-4"></i>
-                        <h5 class="mb-3">Design & Development</h5>
-                        <p class="m-0">Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</p>
+                        <h5 class="mb-3">Additional services.</h5>
+                        <p class="m-0">Additional services.</p>
                     </div>
                 </div>
             </div>
@@ -129,18 +129,23 @@
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
                     <i class="fa fa-certificate fa-3x text-secondary mb-3"></i>
-                    <h1 class="text-white mb-2" data-toggle="counter-up">1234</h1>
-                    <p class="text-white mb-0">Years Experience</p>
+                    <h1 class="text-white mb-2" data-toggle="counter-up">@ViewData["NumberOfItems"]</h1>
+                    <p class="text-white mb-0">Number Of Items</p>
                 </div>
-                <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
-                    <i class="fa fa-users-cog fa-3x text-secondary mb-3"></i>
-                    <h1 class="text-white mb-2" data-toggle="counter-up">1234</h1>
-                    <p class="text-white mb-0">Team Members</p>
+                <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <i class="fa fa-certificate fa-3x text-secondary mb-3"></i>
+                    <h1 class="text-white mb-2" data-toggle="counter-up">@ViewData["numberOfOrder"]</h1>
+                    <p class="text-white mb-0">Number Of Orders</p>
                 </div>
                 <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
                     <i class="fa fa-users fa-3x text-secondary mb-3"></i>
-                    <h1 class="text-white mb-2" data-toggle="counter-up">1234</h1>
-                    <p class="text-white mb-0">Satisfied Clients</p>
+                    <h1 class="text-white mb-2" data-toggle="counter-up">@ViewData["NumberOfCustomers"]</h1>
+                    <p class="text-white mb-0">Registers Clients</p>
+                </div>
+                <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-users fa-3x text-secondary mb-3"></i>
+                    <h1 class="text-white mb-2" data-toggle="counter-up">@ViewData["NumberofTestimonial"]</h1>
+                    <p class="text-white mb-0">Number Of Testimoinal</p>
                 </div>
             </div>
         </div>
@@ -159,7 +164,7 @@
                     <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
                         <div class="rounded overflow-hidden">
                             <div class="position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src=@Url.Content("~/Images/"+item.Imagepath) alt="">
+                                <img class="img-fluid w-100" src=@Url.Content("~/Images/"+item.Imagepath) style ="width:250px;height:220px" alt="">
                                 <div class="portfolio-overlay">
                                     <a class="btn btn-square btn-outline-light mx-1" asp-action="DisplayItems" asp-route-id="@item.Id"> Display Items </a>
                                     @* <a class="btn btn-square btn-outline-light mx-1" href=""><i class="fa fa-link"></i></a>*@
@@ -190,7 +195,7 @@
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="service-item d-flex flex-column text-center rounded">
                             <div class="service-icon flex-shrink-0">
-                                <img class="img-fluid w-100" src=@Url.Content("~/Images/"+item.Imagepath) alt="">
+                                <img class="img-fluid w-100" src=@Url.Content("~/Images/"+item.Imagepath) style="width:250px;height:120px" alt="">
                             </div>
                             <h5 class="mb-3">@item.Name</h5>
                             <p class="m-0">@item.Description</p>
@@ -200,10 +205,12 @@
                                 <input type="button" onclick="decrementValue(@item.Id)" value="-" />
                                 <input type="text" name="quantity" value="1" maxlength="2" max="10" size="1" id="number-@item.Id" />
                                 <input type="button" onclick="incrementValue(@item.Id)" value="+" />
-                                <input type="hidden" name="itemId" value="@item.Id" />
+                                <input type="hidden" name="itemId" value="@item.Id"/>
+                                <input type="number" name="price" placeholder="Offer Price..."/>
+                                
                                 @* <label for="quantity">Quantity</label>
                             <input type="number" name="quantity" id="quantity" />*@
-                                <button type="submit" class="AddToCart">Add to Cart</button>
+                                <button style="margin-top:10px;" type="submit" class="AddToCart">Add Offer</button>
                             </form>
                         </div>
                     </div>

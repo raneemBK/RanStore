@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "T/ObOEz4yr1453Y6oHgn25NvgXjCy3nMH8xg8Cz/fck=",
+  "Hash": "aqR7boooVoZTu+zUt7hVASCPusih09e8cv4FhR/8t/Y=",
   "Source": "RanStoreOracle",
   "BasePath": "_content/RanStoreOracle",
   "Mode": "Default",
@@ -12036,6 +12036,23 @@
       "OriginalItemSpec": "wwwroot\\Images\\0ef7e617-8d48-4ae8-ab0a-f126b6896630_online.jpeg"
     },
     {
+      "Identity": "C:\\Users\\DELL\\source\\repos\\RanStoreOracle\\RanStoreOracle\\wwwroot\\Images\\189cac1e-f2fb-43e2-b964-fe6f0df4d0d0_customers-needs.jpg",
+      "SourceId": "RanStoreOracle",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\DELL\\source\\repos\\RanStoreOracle\\RanStoreOracle\\wwwroot\\",
+      "BasePath": "_content/RanStoreOracle",
+      "RelativePath": "Images/189cac1e-f2fb-43e2-b964-fe6f0df4d0d0_customers-needs.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\189cac1e-f2fb-43e2-b964-fe6f0df4d0d0_customers-needs.jpg"
+    },
+    {
       "Identity": "C:\\Users\\DELL\\source\\repos\\RanStoreOracle\\RanStoreOracle\\wwwroot\\Images\\1a43f431-7eb7-4263-81c1-a538ad55fb5a_CustomerIcon.jpg",
       "SourceId": "RanStoreOracle",
       "SourceType": "Discovered",
@@ -12153,6 +12170,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Images\\39fc3047-492b-4944-afb2-34d40aa514d3_headphone.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\DELL\\source\\repos\\RanStoreOracle\\RanStoreOracle\\wwwroot\\Images\\3a12b733-c399-4128-8d05-41110ff3ea89_customers-needs.jpg",
+      "SourceId": "RanStoreOracle",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\DELL\\source\\repos\\RanStoreOracle\\RanStoreOracle\\wwwroot\\",
+      "BasePath": "_content/RanStoreOracle",
+      "RelativePath": "Images/3a12b733-c399-4128-8d05-41110ff3ea89_customers-needs.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\3a12b733-c399-4128-8d05-41110ff3ea89_customers-needs.jpg"
     },
     {
       "Identity": "C:\\Users\\DELL\\source\\repos\\RanStoreOracle\\RanStoreOracle\\wwwroot\\Images\\41a09400-7b35-4a69-a2f6-ee8005237a96_clothes.jpg",

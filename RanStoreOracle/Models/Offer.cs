@@ -15,5 +15,9 @@ public partial class Offer
 
     public decimal? ItemId { get; set; }
 
+    public decimal? Userfk { get; set; }
+
     public virtual Item? Item { get; set; }
+
+    public virtual User? UserfkNavigation { get; set; }
 }

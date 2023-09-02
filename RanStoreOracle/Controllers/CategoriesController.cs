@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RanStoreOracle.Controllers;
 using RanStoreOracle.Models;
 
 namespace RanStore.Controllers
 {
+
     public class CategoriesController : Controller
     {
         private readonly ModelContext _context;

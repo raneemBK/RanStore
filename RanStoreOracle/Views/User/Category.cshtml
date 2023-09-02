@@ -36,7 +36,7 @@
                 <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
                     <div class="rounded overflow-hidden">
                         <div class="position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src=@Url.Content("~/Images/"+item.Imagepath) alt="">
+                            <img class="img-fluid w-100" src=@Url.Content("~/Images/"+item.Imagepath) style="width:250px;height:220px" alt="">
                             <div class="portfolio-overlay">
                                 <a class="btn btn-square btn-outline-light mx-1" asp-action="DisplayItems" asp-route-id="@item.Id"> Display Items </a>
                                 @*<a class="btn btn-square btn-outline-light mx-1" href=""><i class="fa fa-link"></i></a> <i class="fa fa-eye"></i> *@

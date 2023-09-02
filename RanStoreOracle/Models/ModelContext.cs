@@ -281,10 +281,17 @@ public partial class ModelContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("STATUS");
+            entity.Property(e => e.Userfk)
+                .HasColumnType("NUMBER")
+                .HasColumnName("USERFK");
 
             entity.HasOne(d => d.Item).WithMany(p => p.Offers)
                 .HasForeignKey(d => d.ItemId)
                 .HasConstraintName("SYS_C008345");
+
+            entity.HasOne(d => d.UserfkNavigation).WithMany(p => p.Offers)
+                .HasForeignKey(d => d.Userfk)
+                .HasConstraintName("SYS_C008388");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -419,6 +426,8 @@ public partial class ModelContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("SYS_C008325");
         });
+        modelBuilder.HasSequence("DBMSHP_RUNNUMBER");
+        modelBuilder.HasSequence("DBMSHP_TRACENUMBER");
 
         OnModelCreatingPartial(modelBuilder);
     }

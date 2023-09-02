@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RanStoreOracle.Models;
 using System.IO;
@@ -51,6 +52,7 @@ namespace RanStore.Controllers
         public async Task<IActionResult> Login([Bind("Username,Password")] Login login)
         {
             var auth = _context.Logins.Where(x => x.Username == login.Username && x.Password == login.Password).SingleOrDefault();
+            
             if (auth != null)
             {
                 switch (auth.RoleId)
@@ -61,10 +63,12 @@ namespace RanStore.Controllers
                         return RedirectToAction("Index", "User");
                     case 2:
                         //HttpContext.Session.SetInt32("AdminId", (int)auth.UserId);
-                        HttpContext.Session.SetString("AdminName" , auth.Username);
+                        
                         HttpContext.Session.SetInt32("AdminId", (int)auth.UserId);
                         HttpContext.Session.SetInt32("LoginId", (int)auth.Id);
-
+                        var adminName = _context.Users.FirstOrDefault(u => u.Id == HttpContext.Session.GetInt32("AdminId"));
+                        HttpContext.Session.SetString("AdminName", adminName.Fname);
+                        HttpContext.Session.SetString("AdminImage", adminName.Imagepath);
                         return RedirectToAction("Index", "Admin");
                 }
             }

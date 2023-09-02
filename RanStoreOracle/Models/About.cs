@@ -12,5 +12,5 @@ public partial class About
 
     public string? Images { get; set; }
     [NotMapped]
-    public virtual IFormFile ImageFile { get; set; }
+    public IFormFile ImageFile { get; set; }
 }

@@ -25,6 +25,7 @@ public partial class Item
     public decimal? CategoryId { get; set; }
     [NotMapped]
     public IFormFile ImageFile { get; set; }
+
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
     public virtual Category? Category { get; set; }

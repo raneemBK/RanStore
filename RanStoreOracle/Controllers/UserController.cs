@@ -3,6 +3,7 @@ using Aspose.Pdf.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RanStoreOracle.Controllers;
 using RanStoreOracle.Models;
 using System;
 using System.Net;
@@ -10,6 +11,8 @@ using System.Net.Mail;
 
 namespace RanStore.Controllers
 {
+    [ServiceFilter(typeof(SessionAuthorizationFilter))]
+
     public class UserController : Controller
     {
         private readonly ModelContext _context;
@@ -22,6 +25,10 @@ namespace RanStore.Controllers
 
         public IActionResult Index()
         {
+            ViewData["NumberOfCustomers"] = _context.Logins.Where(x => x.RoleId == 1).Count();
+            ViewData["NumberOfItems"] = _context.Items.Count();
+            ViewData["numberOfOrder"] = _context.Carts.Where(s => s.State == "Finished").Count();
+            ViewData["NumberofTestimonial"] = _context.Testimonials.Count();
             var item = _context.Items.Where(x => x.Status == "Accept").ToList();
             var category = _context.Categories.ToList();
             var testimonial = _context.Testimonials.ToList();
@@ -38,6 +45,10 @@ namespace RanStore.Controllers
         }
         public IActionResult About()
         {
+            ViewData["NumberOfCustomers"] = _context.Logins.Where(x => x.RoleId == 1).Count();
+            ViewData["NumberOfItems"] = _context.Items.Count();
+            ViewData["numberOfOrder"] = _context.Carts.Where(s => s.State == "Finished").Count();
+            ViewData["NumberofTestimonial"] = _context.Testimonials.Count();
             var about = _context.Abouts.ToList();
             return View(about);
         }
@@ -113,7 +124,12 @@ namespace RanStore.Controllers
             {
 
                 //var itemID = _context.Items.Where(x => x.UserId == HttpContext.Session.GetInt32("CustomerId")).ToList();
-                var cart = _context.Carts.Where(u => u.UserId == HttpContext.Session.GetInt32("CustomerId")).Where(s=>s.State=="WAITING").Include(i => i.Item).Include(s=>s.User).ToList();
+                var cart = _context.Carts
+                    .Where(u => u.UserId == HttpContext.Session.GetInt32("CustomerId"))
+                    .Where(item => item.State == "WAITING" || item.State == "WaitingCheckout")
+                    .Include(i => i.Item)
+                    .Include(s => s.User)
+                    .ToList();
                 Random rnd = new Random();
                 int numX = rnd.Next();
                 for (int i = 0; i < cart.Count; i++)
@@ -154,16 +170,25 @@ namespace RanStore.Controllers
                     row.Cells.Add("Quantity");
                     row.Cells.Add("Price");
                     row.Cells.Add("Description");
+                    row.Cells.Add("Note");
 
                 }
                 foreach (var item in cart)
                 {
                     Aspose.Pdf.Row row = table.Rows.Add();
-
+                    
                     row.Cells.Add(item.Item.Name);
                     row.Cells.Add(item.Quantity.ToString());
                     row.Cells.Add(item.Totalprice.ToString());
                     row.Cells.Add(item.Item.Description);
+                    if (item.Item.Status == "WCheckout")
+                    {
+                        row.Cells.Add("Publication costs invoice");
+                        //Item item1 = new Item();
+                        item.Item.Status = "Accept";
+                        _context.Update(item);
+                        _context.SaveChangesAsync();
+                    }
                 }
                 page.Paragraphs.Add(table);
                 page.Paragraphs.Add(new Aspose.Pdf.Text.TextFragment("------------------------------------------------------------------------------------------------------------------------"));
@@ -194,26 +219,33 @@ namespace RanStore.Controllers
             
         }
         [HttpPost]
-        public async Task<IActionResult> AddToCart(decimal itemId, int quantity, Cart cart)
+        public async Task<IActionResult> AddToCart(decimal itemId, int quantity,decimal? price)
         {
+            Offer offer = new Offer();
             var items = await _context.Items.FindAsync(itemId);
             if (items.UserId == HttpContext.Session.GetInt32("CustomerId"))
             {
                 return RedirectToAction("MyItem");
             }
-            cart.ItemId = items.Id;
-            cart.Quantity = quantity;
-            cart.State = "WAITING";
-            cart.Totalprice = items.Price * quantity;
-            cart.UserId = HttpContext.Session.GetInt32("CustomerId");
-            _context.Carts.Add(cart);
+            offer.ItemId=itemId;
+            offer.Price = price;
+            offer.DiscountPer = quantity;
+            
+            offer.Status = "1"; // 1 = waiting
+            offer.Userfk= HttpContext.Session.GetInt32("CustomerId");
+            //cart.ItemId = items.Id;
+            //cart.Quantity = quantity;
+            //cart.State = "WAITING";
+            //cart.Totalprice = items.Price * quantity;
+            //cart.UserId = HttpContext.Session.GetInt32("CustomerId");
+            _context.Offers.Add(offer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
 
         }
         public async Task<IActionResult> Cart()
         {
-            var cart = _context.Carts.Where(x => x.UserId == HttpContext.Session.GetInt32("CustomerId")).Where(S=>S.State=="WAITING").ToList();
+            var cart = _context.Carts.Where(x => x.UserId == HttpContext.Session.GetInt32("CustomerId")).Where(S=>S.State=="WAITING" || S.State == "WaitingCheckout").ToList();
             
             var item = _context.Items.ToList();
             var user = _context.Users.ToList();
@@ -227,6 +259,7 @@ namespace RanStore.Controllers
             // ViewData["totalPrice"] = _context.Carts.Sum(x=>x.TotalPrice);
             ViewData["totalPrice"] = cart.Sum(x => x.Totalprice);
             ViewData["quantity"] = cart.Sum(x => x.Quantity);
+           
             using (ModelContext dbContext = new ModelContext())
             {
                 List<Visa> ipans = dbContext.Visas.Where(x => x.UserId == HttpContext.Session.GetInt32("CustomerId")).ToList();
@@ -354,5 +387,114 @@ namespace RanStore.Controllers
             }
             return View();
         }
+        public IActionResult Offers()
+        {
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId.HasValue)
+            {
+                var offers = _context.Offers
+                    .Where(i => i.Item.UserId == customerId.Value)
+                    .Where(s=>s.Status=="1")
+                    .Include(i => i.Item)
+                    .Include(u => u.UserfkNavigation)
+                    .ToList();
+
+                if (offers!= null && offers.Any())
+                {
+                    return View(offers);
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+
+            }
+
+
+
+
         }
+        [HttpPost]
+        public IActionResult AcceptOffer(int offerid)
+        {
+            var offers=_context.Offers.Where(o=>o.Id == offerid).Include(u=>u.UserfkNavigation).Include(i=>i.Item).FirstOrDefault();
+            Cart cart = new Cart();
+            cart.UserId = offers.UserfkNavigation.Id;
+            cart.ItemId = offers.Item.Id;
+
+            cart.Quantity = offers.DiscountPer;
+            cart.State = "WAITING";
+            cart.Totalprice = offers.Price;
+            _context.Add(cart);
+            _context.SaveChangesAsync();
+            offers.Status = "2";
+            _context.Update(offers);
+            _context.SaveChangesAsync();
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", 587);
+            mail.From = new MailAddress("storeran748@gmail.com");
+            var email = _context.Logins.Where(u => u.UserId == offers.UserfkNavigation.Id).FirstOrDefault().Username;
+            mail.To.Add(email);
+            mail.Subject = "Ran-Store";
+            mail.Body = "Your offer accepted ,Go to checkout ";
+            smtp.Credentials = new NetworkCredential("storeran748@gmail.com", "ouwsljvfgxqyefpp");
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
+            return RedirectToAction(nameof(Index));
+
+        }
+        [HttpPost]
+        public IActionResult rejectOffer(int offerid)
+        {
+            var result = _context.Offers.Where(i => i.Id == offerid).Include(u => u.UserfkNavigation).Include(i => i.Item).FirstOrDefault();
+            result.Status = "0";
+            _context.Update(result);
+            _context.SaveChangesAsync();
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com", 587);
+            mail.From = new MailAddress("storeran748@gmail.com");
+            var email = _context.Logins.Where(u => u.UserId == result.UserfkNavigation.Id).FirstOrDefault().Username;
+            mail.To.Add(email);
+            mail.Subject = "Ran-Store";
+            mail.Body = "Your offer Not accepted";
+            smtp.Credentials = new NetworkCredential("storeran748@gmail.com", "ouwsljvfgxqyefpp");
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
+            return RedirectToAction(nameof(Offers));
+
+        }
+
+        public IActionResult AllItem()
+        {
+            var items=_context.Items.Where(s=>s.Status=="Accept").ToList();
+            return View(items);
+        }
+
+        [HttpPost]
+        public IActionResult AllItem(string filter)
+        {
+            if(filter == "41")
+            {
+                var items = _context.Items.Where(c => c.CategoryId == 41).ToList();
+                return View(items);
+            }
+            if(filter == "1")
+            {
+                var items = _context.Items.Where(c => c.CategoryId != 41).ToList();
+                return View(items);
+            }
+            else
+            {
+                var items = _context.Items.ToList();
+                return View(items);
+            }
+        }
+    }
 }
+

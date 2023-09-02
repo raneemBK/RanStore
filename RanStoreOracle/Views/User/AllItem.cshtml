@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Item>
+
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<style>
+    .AddToCart {
+        color: white;
+        background-color: #171a1c;
+        font-size: 1.2rem;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .AddToCart:hover {
+            background-color: white;
+            color: #171a1c;
+            border: 1px solid #171a1c;
+        }
+</style>
+<div class="container-xxl position-relative p-0">
+    <div class="container-xxl py-5 bg-primary hero-header">
+        <div class="container my-5 py-5 px-lg-5">
+            <div class="row g-5 py-5">
+                <div class="col-12 text-center">
+                    <h1 class="text-white animated slideInDown">Items</h1>
+                    <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Items</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-xxl py-5">
+    <div class="container py-5 px-lg-5">
+        <div class="wow fadeInUp" data-wow-delay="0.1s">
+            <p class="section-title text-secondary justify-content-center"><span></span>Our Items<span></span></p>
+            <h1 class="text-center mb-5">Recently Items</h1>
+        </div>
+        <form asp-action="AllItem" method="post">
+            <select name="filter" class="form-select-sm">
+                <option value="41">Client Needs</option>
+                <option value="1">items for sale</option>
+                <option value="0">All</option>
+
+            </select>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+        <br /><br /><br /><br />
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-item d-flex flex-column text-center rounded">
+                        <div class="service-icon flex-shrink-0">
+                            <img class="img-fluid w-100" src=@Url.Content("~/Images/"+item.Imagepath) alt="">
+                        </div>
+                        <h5 class="mb-3">@item.Name</h5>
+                        <p class="m-0">@item.Description</p>
+                        <p class="m-0">@item.Price JRD</p>
+                        <p class="m-0">Date Of Upload @item.Dateofupload </p>
+                        <form asp-action="AddToCart" method="post">
+                            <input type="button" onclick="decrementValue(@item.Id)" value="-" />
+                            <input type="text" name="quantity" value="1" maxlength="2" max="10" size="1" id="number-@item.Id" />
+                            <input type="button" onclick="incrementValue(@item.Id)" value="+" />
+                            <input type="hidden" name="itemId" value="@item.Id" />
+                            <input type="number" name="price" placeholder="Offer Price..." />
+
+                            @* <label for="quantity">Quantity</label>
+                        <input type="number" name="quantity" id="quantity" />*@
+                            <button style="margin-top:10px;" type="submit" class="AddToCart">Add Offer</button>
+                        </form>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+<!-- Service End -->

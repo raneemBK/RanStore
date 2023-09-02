@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Offer>;
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="container-xxl position-relative p-0">
+    <div class="container-xxl py-5 bg-primary hero-header">
+        <div class="container my-5 py-5 px-lg-5">
+            <div class="row g-5 py-5">
+                <div class="col-12 text-center">
+                    <h1 class="text-white animated slideInDown">Offers</h1>
+                    <hr class="bg-white mx-auto mt-0" style="width: 90px;">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Offers</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-xxl py-5">
+    <div class="container py-5 px-lg-5">
+        <div class="wow fadeInUp" data-wow-delay="0.1s">
+            <p class="section-title text-secondary justify-content-center"><span></span>Our Categories<span></span></p>
+            <h1 class="text-center mb-5">Recently Categories</h1>
+        </div>
+        <div class="row g-4 portfolio-container">
+            
+
+
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-4 col-md-6 portfolio-item first wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <img class="img-fluid w-100" src=@Url.Content("~/Images/"+item.Item.Imagepath) height="120px" alt="">
+                                <div class="portfolio-overlay">
+                                    @*<a class="btn btn-square btn-outline-light mx-1" asp-action="DisplayItems" asp-route-id="@item.Id"> Display Items </a>*@
+                                    @* <a class="btn btn-square btn-outline-light mx-1" href=""><i class="fa fa-link"></i></a>*@
+                                </div>
+                            </div>
+                            <div class="bg-light p-4">
+
+                                <h5 class="lh-base mb-0">Name: @item.Item.Name Price:@item.Price JD  Quantity:@item.DiscountPer</h5>
+                            
+                                <h5 class="lh-base mb-0">Customer : @item.UserfkNavigation.Fname  @item.UserfkNavigation.Lname</h5>
+                            <form asp-action="AcceptOffer" method="post">
+                                <input type="hidden" value="@item.Id" name="offerid" />
+                                <button style="margin-bottom:10px;" type="submit" class="btn btn-success">Accept</button>
+                            </form>
+                            
+                            <form asp-action="rejectOffer" method="post">
+                                <input type="hidden" value="@item.Id" name="offerid" />
+                                <button type="submit" class="btn btn-danger">Reject</button>
+                            </form>
+
+
+                                @* <a asp-action="DisplayItems" asp-route-id="@item.Id">Display Items</a>*@
+                            </div>
+                        </div>
+                    </div>
+                
+            }
+        </div>
+    </div>
+</div>
+

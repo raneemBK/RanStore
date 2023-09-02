@@ -23,6 +23,8 @@ public partial class User
 
     public virtual ICollection<Login> Logins { get; set; } = new List<Login>();
 
+    public virtual ICollection<Offer> Offers { get; set; } = new List<Offer>();
+
     public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
 
     public virtual ICollection<Testimonial> Testimonials { get; set; } = new List<Testimonial>();

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RanStoreOracle.Controllers;
 using RanStoreOracle.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ModelContext>(options => options.UseOracle(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSession(options => { options.IdleTimeout = TimeSpan.FromMinutes(60); });
+builder.Services.AddScoped<SessionAuthorizationFilter>();
+builder.Services.AddControllersWithViews();
 
 //builder.Services.AddTransient<IEmailSender, EmailSender>();
 var app = builder.Build();

@@ -3,9 +3,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RanStoreOracle.Models;
+using System.Net.Mail;
+using System.Net;
+using RanStoreOracle.Controllers;
 
 namespace RanStore.Controllers
 {
+    [ServiceFilter(typeof(SessionAuthorizationFilter))]
+
     public class AdminController : Controller
     {
         private readonly ModelContext _context;
@@ -17,8 +22,12 @@ namespace RanStore.Controllers
         }
         public IActionResult Index()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             ViewData["NumberOfCustomers"] = _context.Logins.Where(x => x.RoleId == 1).Count();
             ViewData["NumberOfItems"] = _context.Items.Count();
+            ViewData["numberOfOrder"]=_context.Carts.Where(s=>s.State=="Finished").Count();
+            ViewData["NumberofTestimonial"] = _context.Testimonials.Count();
             /*var offers = _context.Offers.ToList();
             var numberOffers = from offer in offers
                                group offer by offer.ItemId;
@@ -69,10 +78,14 @@ namespace RanStore.Controllers
         }
         public IActionResult EditAbout()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             return View();
         }
         public IActionResult EditHome()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             return View();
         }
         [HttpPost]
@@ -144,6 +157,8 @@ namespace RanStore.Controllers
         }
         public async Task<IActionResult> ReadMail(decimal? id)
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var result = await _context.Contacts.FirstOrDefaultAsync(x => x.Id == id);
             return View(result);
         }
@@ -169,6 +184,8 @@ namespace RanStore.Controllers
         }
         public IActionResult Report()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var report = _context.Sales.ToList();
             var item = _context.Items.ToList();
             var user = _context.Users.ToList();
@@ -187,6 +204,8 @@ namespace RanStore.Controllers
         }
         public IActionResult AnnualReport()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var report = _context.Sales.ToList();
             var item = _context.Items.ToList();
             var user = _context.Users.ToList();
@@ -206,6 +225,8 @@ namespace RanStore.Controllers
         }
         public IActionResult MonthlyReport()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var report = _context.Sales.ToList();
             var item = _context.Items.ToList();
             var user = _context.Users.ToList();
@@ -226,6 +247,8 @@ namespace RanStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Search(DateTime? startDate, DateTime? endDate)
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var modelContext = _context.Sales.Include(c => c.User).Include(p => p.Item);
             if (startDate == null && endDate == null)
             {
@@ -251,11 +274,15 @@ namespace RanStore.Controllers
         }
         public IActionResult Profile()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var profile = _context.Users.Where(x => x.Id == HttpContext.Session.GetInt32("AdminId"));
             return View(profile);
         }
         public IActionResult RegisterUser()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var user = _context.Users.ToList();
             var login = _context.Logins.ToList();
             var role = _context.Roles.ToList();
@@ -268,21 +295,29 @@ namespace RanStore.Controllers
         }
         public IActionResult ContactUs()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var contact = _context.Contacts.ToList();
             return View(contact);
         }
         public IActionResult AcceptItem()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var item = _context.Items.Where(x=> x.Status == "NotAccept").ToList();
             return View(item);
         }
         public IActionResult AcceptOffer()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var item = _context.Offers.Where(x=> x.Status == "NotAccept").ToList();
             return View(item);
         }
         public IActionResult AcceptTest()
         {
+            ViewBag.AdminName = HttpContext.Session.GetString("AdminName");
+            ViewBag.AdminImage = HttpContext.Session.GetString("AdminImage");
             var item = _context.Testimonials.Where(x=> x.Status == "NotAccept").ToList();
             return View(item);
         }
@@ -330,11 +365,40 @@ namespace RanStore.Controllers
             }
             else
             {
-                item.Status = Status;
-                await _context.SaveChangesAsync();
+                if(Status == "Accept")
+                {
+                    if (item.CategoryId == 41)
+                    {
+                        item.Status = "Accept";
+                        _context.Update(item);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction("AcceptItem", "Admin");
+                    }
+                    Cart cart = new Cart();
+                    cart.Totalprice = 5;
+                    cart.ItemId = item.Id;
+                    cart.State= "WaitingCheckout";
+                    cart.Quantity = 1;
+                    cart.UserId = item.UserId;
+                    _context.Add(cart);
+                    _context.SaveChanges();
+                    item.Status = "WCheckout";
+                    _context.Update(item);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("AcceptItem", "Admin");
+                }
+                else if(Status == "Reject")
+                {
+                    item.Status = "Reject";
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("AcceptItem", "Admin");
+                }
                 return RedirectToAction("AcceptItem", "Admin");
+
             }
-            
+
+
+
         }
         [HttpGet]
         public IActionResult Testmonial()

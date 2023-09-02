@@ -17,6 +17,10 @@ namespace RanStore.Controllers
 
         public IActionResult Index()
         {
+            ViewData["NumberOfCustomers"] = _context.Logins.Where(x => x.RoleId == 1).Count();
+            ViewData["NumberOfItems"] = _context.Items.Count();
+            ViewData["numberOfOrder"] = _context.Carts.Where(s => s.State == "Finished").Count();
+            ViewData["NumberofTestimonial"] = _context.Testimonials.Count();
             var home = _context.Homes.ToList();
             var about = _context.Abouts.ToList();
             var category = _context.Categories.ToList();
@@ -47,6 +51,10 @@ namespace RanStore.Controllers
         }
         public IActionResult About()
         {
+            ViewData["NumberOfCustomers"] = _context.Logins.Where(x => x.RoleId == 1).Count();
+            ViewData["NumberOfItems"] = _context.Items.Count();
+            ViewData["numberOfOrder"] = _context.Carts.Where(s => s.State == "Finished").Count();
+            ViewData["NumberofTestimonial"] = _context.Testimonials.Count();
             var about = _context.Abouts.ToList();
             return View(about);
         }
